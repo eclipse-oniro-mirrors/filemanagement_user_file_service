@@ -1,0 +1,87 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+FMS_BASE_DIR = "//foundation/storage/services"
+
+group("fms") {
+  deps = [
+    ":fms_service.rc",
+    ":fms_server",
+  ]
+}
+
+ohos_prebuilt_etc("fms_service.rc") {
+  if (use_musl) {
+    source = "etc/fms_service.cfg"
+  } else {
+    source = "etc/fms_service.rc"
+  }
+  relative_install_dir = "init"
+  subsystem_name = "storage"
+  part_name = "filemanager"
+}
+
+
+ohos_shared_library("fms_server") {
+  subsystem_name = "storage"
+  part_name = "filemanager"
+
+  include_dirs = [
+    "$FMS_BASE_DIR/include",
+    "$FMS_BASE_DIR/src/client",
+    "$FMS_BASE_DIR/src/server",
+    "$FMS_BASE_DIR/src/fileoper",
+    "$FMS_BASE_DIR/include/fileoper",
+     "//base/hiviewdfx/hilog/interfaces/native/innerkits/include/hilog",
+  ]
+
+  sources = [
+    "src/server/fms_service_stub.cpp",
+    "src/server/fms_service.cpp",
+    "src/fileoper/fms_mediafile_oper.cpp",
+    "src/fileoper/fms_oper_factory.cpp",
+    "src/client/fms_proxy.cpp",
+  ]
+
+  deps = [
+    "//utils/native/base:utils",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    "//foundation/multimedia/medialibrary_standard/frameworks/innerkitsimpl/medialibrary_data_ability:medialibrary_data_ability",
+    "//foundation/aafwk/standard/frameworks/kits/ability/native:abilitykit_native",
+    "//foundation/aafwk/standard/interfaces/innerkits/base:base",
+    "//foundation/aafwk/standard/interfaces/innerkits/dataobs_manager:dataobs_manager",
+    "//foundation/distributedschedule/dmsfwk/interfaces/innerkits/uri:zuri",
+  ]
+  cflags = []
+  if (target_cpu == "arm") {
+    cflags += [ "-DBINDER_IPC_32BIT" ]
+  }
+  external_deps = [
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_standard:samgr_proxy",
+    "aafwk_standard:ability_manager",
+    "native_appdatamgr:native_appdatafwk",
+    "native_appdatamgr:native_dataability",
+    "native_appdatamgr:native_rdb",
+  ]
+}
+
+# Unittest
+group("test") {
+  testonly = true
+
+  deps = [ "test:test" ]
+}

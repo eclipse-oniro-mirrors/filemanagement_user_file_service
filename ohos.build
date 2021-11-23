@@ -1,0 +1,12 @@
+{
+  "subsystem": "storage",
+  "parts": {
+    "filemanager": {
+      "module_list": [
+        "//foundation/storage/services:fms",
+        "//foundation/storage/sa_profile:filemanager_service_sa_profile",
+        "//foundation/storage/interfaces/kits/js:filemanager"
+      ]
+    }
+  }
+}
