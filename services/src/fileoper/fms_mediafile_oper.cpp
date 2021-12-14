@@ -153,6 +153,39 @@ bool GetRelativePath(const string &path, string &relativePath)
     return true;
 }
 
+int MediaFileOper::OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply)
+{
+    int errCode = SUCCESS;
+    // media process
+    switch(code) {
+        case FILE_OPER::MKDIR: {
+            string name = data.ReadString();
+            string path = data.ReadString();
+            errCode = mkdir(name, path);
+            break;
+        }
+        case FILE_OPER::LIST_FILE: {
+            string path = data.ReadString();
+            int off = data.ReadInt32();
+            int count = data.ReadInt32();
+            errCode = ListFile(path, off, count, reply);
+            // need reply fileInfo
+            break;
+        }
+        case FILE_OPER::CREATE_FILE: {
+            string name = data.ReadString();
+            string path = data.ReadString();
+            string uri;
+            errCode = CreateFile(name, path, uri);
+            reply.WriteString(uri);
+            break;
+        }
+        default:
+            break;
+    }
+    return errCode;
+}
+
 int MediaFileOper::ListFile(const string &path, int offset, int count, MessageParcel &reply)
 {
     //get the relative path from the path uri

@@ -26,6 +26,7 @@ public:
     int mkdir(const std::string &name, const std::string &path) override;
     int ListFile(const std::string &path, int offset, int count, MessageParcel &data) override;
     int CreateFile(const std::string &name, const std::string &path, std::string &uri) override;
+    int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply) override;
 };
 } // OHOS
 } // FileManager

@@ -28,7 +28,8 @@ public:
     virtual ~FileOper() = default;
     virtual int mkdir(const std::string &name, const std::string &path) = 0;
     virtual int ListFile(const std::string &path, int offset, int count, MessageParcel &data) = 0;
-    virtual int CreateFile(const std::string &name, const std::string &path, std::string &uri);
+    virtual int CreateFile(const std::string &name, const std::string &path, std::string &uri) = 0;
+    virtual int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply) = 0;
 };
 } // OHOS
 } // FileManager

@@ -17,20 +17,25 @@
 #include <vector>
 namespace OHOS {
 namespace FileManagerService {
-enum {
-    FMS_GET_ROOT,
-    FMS_MEDIA_START,
-    FMS_MEDIA_MKDIR,
-    FMS_MEDIA_LISTFILE,
-    FMS_MEDIA_CREATEFILE,
-    FMS_MEDIA_END,
-    FMS_EXTERNAL_START,
-    FMS_EXTERNAL_END,
+enum FILE_OPER {
+    GET_ROOT,
+    MKDIR,
+    LIST_FILE,
+    CREATE_FILE
 };
+
+enum EQUIPMENT {
+    INTERNAL,
+    EXTERNAL
+};
+
+const int32_t CODE_MASK = 0xff;
+const int32_t EQUIPMENT_SHIFT = 16;
+
 const int32_t SUCCESS = 0;
 const int32_t FAIL = -1;
-const int32_t E_NOEXIST = -2;
-const int32_t E_EMPTYFOLDER = -3;
+const int32_t E_NOEXIST = -2;        // file not exist
+const int32_t E_EMPTYFOLDER = -3;    // folder empty
 
 } // namespace FileManagerService
 } // namespace OHOS

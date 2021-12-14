@@ -13,21 +13,34 @@
  * limitations under the License.
  */
 
+#include "fms_oper_factory.h"
+
+#include "fms_const.h"
 #include "fms_file_oper.h"
 #include "fms_mediafile_oper.h"
-#include "fms_oper_factory.h"
 #include "log.h"
 
 using namespace std;
-
 namespace OHOS {
 namespace FileManagerService {
-FileOper* OperFactory::getFileOper(string oper)
+FileOper* OperFactory::getFileOper(int equipmentId)
 {
-
-    DEBUG_LOG("OperFactory::getFileOper %{public}s.",oper.c_str());
-
-    return new MediaFileOper();
+    DEBUG_LOG("OperFactory::getFileOper %{public}d.", equipmentId);
+    switch (equipmentId) {
+        case EQUIPMENT::INTERNAL: {
+            return new MediaFileOper();
+            break;
+        }
+        case EQUIPMENT::EXTERNAL: {
+            // do Exteranl storage process;
+            // return ExternalOper()
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    return nullptr;
 }
 
 } // namespace FileManagerService

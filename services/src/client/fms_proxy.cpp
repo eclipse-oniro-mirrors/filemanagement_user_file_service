@@ -23,48 +23,6 @@ using namespace std;
 
 namespace OHOS {
 namespace FileManagerService {
-FileManagerProxy::FileManagerProxy(const sptr<IRemoteObject> &impl)
-    : IRemoteProxy<IFileManagerService>(impl) { }
-
-IFmsClient *IFmsClient::GetFmsInstance()
-{
-    auto samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-    if (samgr == nullptr) {
-        DEBUG_LOG("samgr object is NULL.");
-        return nullptr;
-    }
-    sptr<IRemoteObject> object = samgr->GetSystemAbility(FILE_MANAGER_SERVICE_ID);
-    if (object == nullptr) {
-        DEBUG_LOG("FileManager Service object is NULL.");
-        return nullptr;
-    }
-    static FileManagerProxy msProxy(object);
-
-    DEBUG_LOG("FileManagerProxy::GetFmsInstance");
-    return &msProxy;
-}
-
-int FileManagerProxy::CreateFile(string name, string path, string &uri)
-{
-    MessageParcel data;
-    MessageParcel reply;
-    MessageOption option;
-
-    sptr<IRemoteObject> remote = Remote();
-    data.WriteString(name);
-    data.WriteString(path);
-    int err = remote->SendRequest(FMS_MEDIA_CREATEFILE, data, reply, option);
-    if (err != ERR_NONE) {
-        ERR_LOG("FileManagerProxy::CreateFile send request fail %{public}d", err);
-        return err;
-    }
-    reply.ReadString(uri);
-    DEBUG_LOG("FileManagerProxy::CreateFile reply uri %{public}s", uri.c_str());
-    reply.ReadInt32(err);
-    DEBUG_LOG("FileManagerProxy::CreateFile reply %{public}d", err);
-    return err;
-}
-
 int GetFileInfo(FileInfo &file, MessageParcel &reply)
 {
     string path;
@@ -84,6 +42,45 @@ int GetFileInfo(FileInfo &file, MessageParcel &reply)
     return SUCCESS;
 }
 
+FileManagerProxy::FileManagerProxy(const sptr<IRemoteObject> &impl)
+    : IRemoteProxy<IFileManagerService>(impl) { }
+
+int FileManagerProxy::CreateFile(string name, string path, string &uri)
+{
+    MessageParcel data;
+    MessageParcel reply;
+    MessageOption option;
+
+    sptr<IRemoteObject> remote = Remote();
+    data.WriteString(name);
+    data.WriteString(path);
+    int err = remote->SendRequest(FILE_OPER::CREATE_FILE, data, reply, option);
+    if (err != ERR_NONE) {
+        ERR_LOG("FileManagerProxy::CreateFile send request fail %{public}d", err);
+        return err;
+    }
+    reply.ReadString(uri);
+    reply.ReadInt32(err);
+    return err;
+}
+
+IFmsClient *IFmsClient::GetFmsInstance()
+{
+    auto samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (samgr == nullptr) {
+        DEBUG_LOG("samgr object is NULL.");
+        return nullptr;
+    }
+    sptr<IRemoteObject> object = samgr->GetSystemAbility(FILE_MANAGER_SERVICE_ID);
+    if (object == nullptr) {
+        DEBUG_LOG("FileManager Service object is NULL.");
+        return nullptr;
+    }
+    static FileManagerProxy msProxy(object);
+
+    DEBUG_LOG("FileManagerProxy::GetFmsInstance");
+    return &msProxy;
+}
 
 int FileManagerProxy::ListFile(string path, int off, int count, vector<FileInfo> &fileRes)
 {
@@ -96,14 +93,13 @@ int FileManagerProxy::ListFile(string path, int off, int count, vector<FileInfo>
     data.WriteString(path);
     data.WriteInt32(off);
     data.WriteInt32(count);
-    err = remote->SendRequest(FMS_MEDIA_LISTFILE, data, reply, option);
+    err = remote->SendRequest(FILE_OPER::LIST_FILE, data, reply, option);
     if (err != ERR_NONE) {
         ERR_LOG("FileManagerProxy::ListFile err %{public}d", err);
         return err;
     }
     int fileInfoNum = 0;
     reply.ReadInt32(fileInfoNum);
-    ERR_LOG("FileManagerProxy::ListFile num %{public}d", fileInfoNum);
     while (fileInfoNum) {
         FileInfo file;
         GetFileInfo(file, reply);
@@ -111,7 +107,6 @@ int FileManagerProxy::ListFile(string path, int off, int count, vector<FileInfo>
         fileInfoNum--;
     }
     reply.ReadInt32(err);
-    DEBUG_LOG("FileManagerProxy::ListFile reply %{public}d", err);
     return err;
 }
 
@@ -125,7 +120,7 @@ int FileManagerProxy::mkdir(string name, string path)
     sptr<IRemoteObject> remote = Remote();
     data.WriteString(name);
     data.WriteString(path);
-    err = remote->SendRequest(FMS_MEDIA_MKDIR, data, reply, option);
+    err = remote->SendRequest(FILE_OPER::MKDIR, data, reply, option);
     if (err != ERR_NONE) {
         ERR_LOG("FileManagerProxy::mkdir err %{public}d", err);
         return err;

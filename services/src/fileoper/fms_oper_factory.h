@@ -23,7 +23,7 @@ namespace OHOS {
 namespace FileManagerService {
 class OperFactory {
 public:
-    FileOper* getFileOper(std::string oper);
+    FileOper* getFileOper(int equipmentId);
 };
 } // OHOS
 } // FileManager

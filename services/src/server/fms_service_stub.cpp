@@ -24,81 +24,34 @@ using namespace std;
 
 namespace OHOS {
 namespace FileManagerService {
-int FileManagerServiceStub::OperMediaProcess(OperFactory &factory, uint32_t code, MessageParcel &data,
-    MessageParcel &reply)
+int getEquipmentCode(uint32_t code)
 {
-    int errCode = SUCCESS;
-    if (code < FMS_MEDIA_START || code > FMS_MEDIA_END) {
-        return errCode;
-    }
-    auto *fp = factory.getFileOper("media");
-    // media process
-    switch(code) {
-        case FMS_MEDIA_MKDIR: {
-            string name = data.ReadString();
-            string path = data.ReadString();
-            errCode = fp->mkdir(name, path);
-            break;
-        }
-        case FMS_MEDIA_LISTFILE: {
-            string path = data.ReadString();
-            int off = data.ReadInt32();
-            int count = data.ReadInt32();
-            errCode = fp->ListFile(path, off, count, reply);
-            // need reply fileInfo
-            break;
-        }
-        case FMS_MEDIA_CREATEFILE: {
-            string name = data.ReadString();
-            string path = data.ReadString();
-            string uri;
-            errCode = fp->CreateFile(name, path, uri);
-            reply.WriteString(uri);
-            break;
-        }
-        default:
-            break;
-    }
-    delete fp;
-    return errCode;
+    return (code >> EQUIPMENT_SHIFT) & CODE_MASK;
 }
-
-int FileManagerServiceStub::OperExtProcess(OperFactory &factory, uint32_t code, MessageParcel &data,
-    MessageParcel &reply)
+int getOperCode(uint32_t code)
 {
-    int errCode = SUCCESS;
-    if (code < FMS_EXTERNAL_START || code > FMS_EXTERNAL_END) {
-        return errCode;
-    }
-    // do Exteranl storage process;
-    return errCode;
+    return code & CODE_MASK;
 }
-
 int FileManagerServiceStub::OperProcess(uint32_t code, MessageParcel &data,
     MessageParcel &reply)
 {
-    int errCode = SUCCESS;
-
-    switch (code) {
-        case FMS_GET_ROOT: {
-            // return root base on type
-            // return fileInfo
-            break;
-        }
-        default: {
-            OperFactory factory = OperFactory();
-            // check uri -->Media or --> External
-            errCode = OperMediaProcess(factory, code, data, reply);
-        }
+    int equipmentId = getEquipmentCode(code);
+    int operCode = getOperCode(code);
+    OperFactory factory = OperFactory();
+    auto *fp = factory.getFileOper(equipmentId);
+    if (fp == nullptr) {
+        ERR_LOG("OnRemoteRequest inner error %{public}d", code);
+        return FAIL;
     }
+    int errCode = fp->OperProcess(operCode, data, reply);
+
+    delete fp;
     return errCode;
 }
 
 int FileManagerServiceStub::OnRemoteRequest(uint32_t code, MessageParcel &data,
     MessageParcel &reply, MessageOption &option)
 {
-    DEBUG_LOG("OnRemoteRequest %{public}d", code);
-
     // to do checkpermission()
     // do file process
     int32_t errCode = OperProcess(code, data, reply);

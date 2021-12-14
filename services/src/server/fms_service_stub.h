@@ -21,7 +21,6 @@
 #include "iremote_stub.h"
 #include "../fileoper/fms_oper_factory.h"
 
-
 namespace OHOS {
 namespace FileManagerService {
 class IFileManagerService : public IRemoteBroker {
@@ -31,13 +30,7 @@ public:
 
 class FileManagerServiceStub : public IRemoteStub<IFileManagerService> {
 public:
-
     int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply);
-    int OperMediaProcess(OperFactory &factory, uint32_t code, MessageParcel &data,
-        MessageParcel &reply);
-    int OperExtProcess(OperFactory &factory, uint32_t code, MessageParcel &data,
-        MessageParcel &reply);
-
     virtual int OnRemoteRequest(uint32_t code, MessageParcel &data,
                                 MessageParcel &reply, MessageOption &option) override;
 };
