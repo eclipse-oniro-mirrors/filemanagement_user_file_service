@@ -54,12 +54,9 @@ int Insert(const string &name, const string &path, const string &type)
     }
     Uri createUri(abilityUri + "/" + oper);
     struct stat statInfo {};
-    string str = createUri.ToString();
-    DEBUG_LOG("MediaFileOper::Insert uri %{public}s", str.c_str());
-    values.PutString(Media::MEDIA_DATA_DB_URI, name);
-    values.PutString(Media::MEDIA_DATA_DB_FILE_PATH, path + "/" + name);
-    values.PutString(Media::MEDIA_DATA_DB_RELATIVE_PATH, "dstPath2");
-    values.PutString(Media::MEDIA_DATA_DB_NAME, "dispName2");
+    // need getfileStat info
+    // need MEDIA_DATA_DB_RELATIVE_PATH
+    // need MEDIA_DATA_DB_NAME
     values.PutLong(Media::MEDIA_DATA_DB_DATE_ADDED, statInfo.st_ctime);
     values.PutLong(Media::MEDIA_DATA_DB_DATE_MODIFIED, statInfo.st_mtime);
     abi.InitMediaLibraryRdbStore();

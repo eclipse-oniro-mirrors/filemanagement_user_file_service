@@ -71,8 +71,8 @@ int GetFileInfo(FileInfo &file, MessageParcel &reply)
     string name;
     string type;
     int64_t size = 0;
-    int64_t at  = 0;
-    int64_t  mt  = 0;
+    int64_t at = 0;
+    int64_t mt = 0;
 
     reply.ReadString(path);
     reply.ReadString(type);
