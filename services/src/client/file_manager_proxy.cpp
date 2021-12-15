@@ -129,6 +129,5 @@ int FileManagerProxy::Mkdir(string name, string path)
     DEBUG_LOG("FileManagerProxy::mkdir reply %{public}d", err);
     return err;
 }
-
 } // FileManagerService
 } // namespace OHOS

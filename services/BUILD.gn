@@ -80,6 +80,37 @@ ohos_shared_library("fms_server") {
   ]
 }
 
+
+ohos_executable("fms_exe") {
+  install_enable = true
+
+  sources = [ "exe/main.cpp" ]
+
+  include_dirs = [
+    "$FMS_BASE_DIR/include",
+    "$FMS_BASE_DIR/src/client",
+    "$FMS_BASE_DIR/src/server",
+    "$FMS_BASE_DIR/src/fileoper",
+  ]
+
+  deps = [
+    "//utils/native/base:utils",
+    "//base/hiviewdfx/hilog/interfaces/native/innerkits:libhilog",
+    ":fms_server",
+  ]
+
+  external_deps = [
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_standard:samgr_proxy",
+  ]
+
+  subsystem_name = "storage"
+  part_name = "filemanager"
+}
+
+
 # Unittest
 group("test") {
   testonly = true

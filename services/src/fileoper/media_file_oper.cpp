@@ -31,16 +31,21 @@ using namespace std;
 
 namespace OHOS {
 namespace FileManagerService {
-const std::vector<std::string> mediaData = { Media::MEDIA_DATA_DB_ID,
-                             Media::MEDIA_DATA_DB_URI,
-                             Media::MEDIA_DATA_DB_NAME };
-const std::vector<std::pair<int, std::string>> mediaMetaMap = { {0, "string"}, // 0 id
-                                            {1, "string"},  // 1 fileuri
-                                            {4, "string"},  // 4 type
-                                            {6, "string"},  // 6 name
-                                            {7, "int"},     // 7 size
-                                            {8, "int"},     // 8 at
-                                            {9, "int"} };   // 9 mt
+const std::vector<std::string> mediaData = {
+            Media::MEDIA_DATA_DB_ID,
+            Media::MEDIA_DATA_DB_URI,
+            Media::MEDIA_DATA_DB_NAME
+            };
+const std::vector<std::pair<int, std::string>> mediaMetaMap = {
+            {0, "string"}, // 0 id
+            {1, "string"},  // 1 fileuri
+            {4, "string"},  // 4 type
+            {6, "string"},  // 6 name
+            {7, "int"},     // 7 size
+            {8, "int"},     // 8 at
+            // 9 mt
+            {9, "int"}
+            };
 int Insert(const string &name, const string &path, const string &type)
 {
     Media::ValuesBucket values;
@@ -49,7 +54,7 @@ int Insert(const string &name, const string &path, const string &type)
     string oper;
     if (type == "album") {
         oper = Media::MEDIA_ALBUMOPRN + "/" + Media::MEDIA_ALBUMOPRN_CREATEALBUM;
-    } else if(type == "file") {
+    } else if (type == "file") {
         oper = Media::MEDIA_FILEOPRN + "/" + Media::MEDIA_FILEOPRN_CREATEASSET;
     }
     Uri createUri(abilityUri + "/" + oper);
@@ -66,13 +71,11 @@ int Insert(const string &name, const string &path, const string &type)
 int MediaFileOper::CreateFile(const std::string &name, const std::string &path, std::string &uri)
 {
     string type = "file";
-
     int index = Insert(name, path, type);
-
     // media type need to check the path
     if (index < 0) {
-         ERR_LOG("MediaFileOper:: Fail to create fail %{public}s %{public}s", name.c_str(), path.c_str());
-         return index;
+        ERR_LOG("MediaFileOper:: Fail to create fail %{public}s %{public}s", name.c_str(), path.c_str());
+        return index;
     }
     uri = Media::MEDIALIBRARY_FILE_URI;
     uri += "/" + to_string(index);
@@ -87,8 +90,7 @@ bool PushFileInfo(shared_ptr<Media::AbsSharedResultSet> result, MessageParcel &r
     result->GetString(mediaMetaMap[1].first, uri);
     reply.WriteString(uri + "/" + id);
     for (int i = 2; i < mediaMetaMap.size(); i++) {
-        if(mediaMetaMap[i].second == "string")
-        {
+        if (mediaMetaMap[i].second == "string") {
             string value;
             result->GetString(mediaMetaMap[i].first, value);
             reply.WriteString(value);
@@ -141,12 +143,12 @@ bool GetRelativePath(const string &path, string &relativePath)
     }
     int32_t columnIndex;
     int ret = result->GetColumnIndex(Media::MEDIA_DATA_DB_FILE_PATH, columnIndex);
-    if(ret != NativeRdb::E_OK) {
+    if (ret != NativeRdb::E_OK) {
         return false;
     }
     result->GoToFirstRow();
     ret = result->GetString(columnIndex, relativePath);
-    if(ret != NativeRdb::E_OK) {
+    if (ret != NativeRdb::E_OK) {
         return false;
     }
     DEBUG_LOG("GetRelativePath %{public}s", relativePath.c_str());
@@ -157,7 +159,7 @@ int MediaFileOper::OperProcess(uint32_t code, MessageParcel &data, MessageParcel
 {
     int errCode = SUCCESS;
     // media process
-    switch(code) {
+    switch (code) {
         case FILE_OPER::MKDIR: {
             string name = data.ReadString();
             string path = data.ReadString();
@@ -188,11 +190,11 @@ int MediaFileOper::OperProcess(uint32_t code, MessageParcel &data, MessageParcel
 
 int MediaFileOper::ListFile(const string &path, int offset, int count, MessageParcel &reply)
 {
-    //get the relative path from the path uri
+    // get the relative path from the path uri
     string relativePath;
 
     DEBUG_LOG("ListFile %{public}s", path.c_str());
-    if(!GetRelativePath(path, relativePath)) {
+    if (!GetRelativePath(path, relativePath)) {
         ERR_LOG("MediaFileOper::path not exsit");
         return E_NOEXIST;
     }
@@ -221,6 +223,5 @@ int MediaFileOper::Mkdir(const string &name, const string &path)
     DEBUG_LOG("MediaFileOper::mkdir path %{public}s.", path.c_str());
     return 1;
 }
-
 } // namespace FileManagerService
 } // namespace OHOS

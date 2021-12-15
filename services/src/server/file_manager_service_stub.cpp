@@ -58,6 +58,5 @@ int FileManagerServiceStub::OnRemoteRequest(uint32_t code, MessageParcel &data,
     reply.WriteInt32(errCode);
     return errCode;
 }
-
 } // namespace FileManagerService
 } // namespace OHOS

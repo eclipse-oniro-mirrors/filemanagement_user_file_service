@@ -27,9 +27,9 @@ public:
     explicit FileManagerProxy(const sptr<IRemoteObject> &impl);
     virtual ~FileManagerProxy() = default;
     static IFmsClient* GetFmsInstance();
-    int Mkdir(std::string name, std::string path);
-    int ListFile(std::string path, int off, int count, std::vector<FileInfo> &fileRes);
-    int CreateFile(std::string name, std::string path, std::string &uri);
+    int Mkdir(std::string name, std::string path) override;
+    int ListFile(std::string path, int off, int count, std::vector<FileInfo> &fileRes) override;
+    int CreateFile(std::string name, std::string path, std::string &uri) override;
 
 private:
     static inline BrokerDelegator<FileManagerProxy> delegator_;

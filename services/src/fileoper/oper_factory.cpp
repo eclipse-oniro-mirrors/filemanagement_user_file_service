@@ -43,6 +43,5 @@ FileOper* OperFactory::getFileOper(int equipmentId)
     }
     return fp;
 }
-
 } // namespace FileManagerService
 } // namespace OHOS

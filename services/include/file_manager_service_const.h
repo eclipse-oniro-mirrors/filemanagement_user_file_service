@@ -36,6 +36,5 @@ const int32_t SUCCESS = 0;
 const int32_t FAIL = -1;
 const int32_t E_NOEXIST = -2;        // file not exist
 const int32_t E_EMPTYFOLDER = -3;    // folder empty
-
 } // namespace FileManagerService
 } // namespace OHOS

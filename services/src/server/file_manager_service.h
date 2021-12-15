@@ -21,21 +21,15 @@
 
 namespace OHOS {
 namespace FileManagerService {
-
 class FileManagerService : public SystemAbility, public FileManagerServiceStub {
     DECLARE_SYSTEM_ABILITY(FileManagerService);
 public:
     DISALLOW_COPY_AND_MOVE(FileManagerService);
     explicit FileManagerService(int32_t systemAbilityId, bool runOnCreate = true);
     virtual ~FileManagerService() = default;
-
     void OnDump() override;
-
     void OnStart() override;
-
     void OnStop() override;
-
 };
-
 } // namespace FileManagerService
 } // namespace OHOS

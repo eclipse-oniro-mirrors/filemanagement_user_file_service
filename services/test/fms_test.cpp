@@ -222,5 +222,4 @@ HWTEST_F(FMSTest, FMS_Mediafile_mkdir_0000, testing::ext::TestSize.Level1)
     }
     cout << "FMSTest-end FMS_Mediafile_mkdir_0000" << endl;
 }
-
 } // namespace
