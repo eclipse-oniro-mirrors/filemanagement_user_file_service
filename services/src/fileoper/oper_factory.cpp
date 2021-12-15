@@ -13,33 +13,35 @@
  * limitations under the License.
  */
 
-#include "fms_service.h"
+#include "oper_factory.h"
 
-#include "iservice_registry.h"
+#include "file_oper.h"
+#include "file_manager_service_const.h"
 #include "log.h"
-#include "system_ability_definition.h"
+#include "media_file_oper.h"
 
-
+using namespace std;
 namespace OHOS {
 namespace FileManagerService {
-REGISTER_SYSTEM_ABILITY_BY_ID(FileManagerService, FILE_MANAGER_SERVICE_ID, true);
-
-FileManagerService::FileManagerService(int32_t systemAbilityId, bool runOnCreate)
-    : SystemAbility(systemAbilityId, runOnCreate) { }
-void FileManagerService::OnDump() { }
-
-void FileManagerService::OnStart()
+FileOper* OperFactory::getFileOper(int equipmentId)
 {
-    DEBUG_LOG("FileManagerService::OnStart called");
-    bool res = Publish(this);
-    if (res) {
-        DEBUG_LOG("FileManagerService OnStart valid");
+    FileOper* fp = nullptr;
+    DEBUG_LOG("OperFactory::getFileOper %{public}d.", equipmentId);
+    switch (equipmentId) {
+        case EQUIPMENT::INTERNAL: {
+            fp = new MediaFileOper();
+            break;
+        }
+        case EQUIPMENT::EXTERNAL: {
+            // do Exteranl storage process;
+            // return ExternalOper()
+            break;
+        }
+        default: {
+            break;
+        }
     }
-}
-
-void FileManagerService::OnStop()
-{
-    DEBUG_LOG("FileManagerService OnStop");
+    return fp;
 }
 
 } // namespace FileManagerService

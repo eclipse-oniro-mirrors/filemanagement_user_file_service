@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-#include "fms_service_stub.h"
+#include "file_manager_service_stub.h"
 
-#include "fms_const.h"
-#include "fms_oper_factory.h"
-#include "fms_service.h"
+#include "file_manager_service_const.h"
+#include "file_manager_service.h"
 #include "log.h"
+#include "oper_factory.h"
 
 using namespace std;
 

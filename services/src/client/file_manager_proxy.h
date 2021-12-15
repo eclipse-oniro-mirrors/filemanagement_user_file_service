@@ -12,36 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#pragma once
 
-#include "fms_oper_factory.h"
+#include "file_manager_service_stub.h"
+#include "ifms_client.h"
+#include "iremote_proxy.h"
+#include "iservice_registry.h"
+#include "system_ability_definition.h"
 
-#include "fms_const.h"
-#include "fms_file_oper.h"
-#include "fms_mediafile_oper.h"
-#include "log.h"
-
-using namespace std;
 namespace OHOS {
 namespace FileManagerService {
-FileOper* OperFactory::getFileOper(int equipmentId)
-{
-    DEBUG_LOG("OperFactory::getFileOper %{public}d.", equipmentId);
-    switch (equipmentId) {
-        case EQUIPMENT::INTERNAL: {
-            return new MediaFileOper();
-            break;
-        }
-        case EQUIPMENT::EXTERNAL: {
-            // do Exteranl storage process;
-            // return ExternalOper()
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    return nullptr;
-}
+class FileManagerProxy : public IRemoteProxy<IFileManagerService>, public IFmsClient {
+public:
+    explicit FileManagerProxy(const sptr<IRemoteObject> &impl);
+    virtual ~FileManagerProxy() = default;
+    static IFmsClient* GetFmsInstance();
+    int Mkdir(std::string name, std::string path);
+    int ListFile(std::string path, int off, int count, std::vector<FileInfo> &fileRes);
+    int CreateFile(std::string name, std::string path, std::string &uri);
 
+private:
+    static inline BrokerDelegator<FileManagerProxy> delegator_;
+};
 } // namespace FileManagerService
 } // namespace OHOS

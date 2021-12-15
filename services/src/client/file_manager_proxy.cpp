@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "fms_proxy.h"
+#include "file_manager_proxy.h"
 
-#include "fms_const.h"
-#include "fms_fileinfo.h"
-#include "fms_service_stub.h"
+#include "file_manager_service_const.h"
+#include "file_info.h"
+#include "file_manager_service_stub.h"
 #include "log.h"
 
 using namespace std;
@@ -110,7 +110,7 @@ int FileManagerProxy::ListFile(string path, int off, int count, vector<FileInfo>
     return err;
 }
 
-int FileManagerProxy::mkdir(string name, string path)
+int FileManagerProxy::Mkdir(string name, string path)
 {
     int err;
     MessageParcel data;

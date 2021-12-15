@@ -18,6 +18,7 @@ group("fms") {
   deps = [
     ":fms_service.rc",
     ":fms_server",
+    ":fms_exe",
   ]
 }
 
@@ -47,11 +48,11 @@ ohos_shared_library("fms_server") {
   ]
 
   sources = [
-    "src/server/fms_service_stub.cpp",
-    "src/server/fms_service.cpp",
-    "src/fileoper/fms_mediafile_oper.cpp",
-    "src/fileoper/fms_oper_factory.cpp",
-    "src/client/fms_proxy.cpp",
+    "src/server/file_manager_service_stub.cpp",
+    "src/server/file_manager_service.cpp",
+    "src/fileoper/media_file_oper.cpp",
+    "src/fileoper/oper_factory.cpp",
+    "src/client/file_manager_proxy.cpp",
   ]
 
   deps = [

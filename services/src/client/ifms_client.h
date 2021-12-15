@@ -14,7 +14,7 @@
  */
 
 #pragma once
-#include "fms_fileinfo.h"
+#include "file_info.h"
 
 namespace OHOS {
 namespace FileManagerService {
@@ -24,7 +24,7 @@ public:
 
     static IFmsClient  *GetFmsInstance();
 
-    virtual int mkdir(std::string name, std::string path) = 0;
+    virtual int Mkdir(std::string name, std::string path) = 0;
     virtual int ListFile(std::string path, int off, int count, std::vector<FileInfo> &fileRes) = 0;
     virtual int CreateFile(std::string name, std::string path, std::string &uri) = 0;
 };

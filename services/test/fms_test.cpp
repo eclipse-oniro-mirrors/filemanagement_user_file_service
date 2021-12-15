@@ -22,7 +22,7 @@
 #include <refbase.h>
 #include <system_ability_definition.h>
 #include <unistd.h>
-#include "fms_proxy.h"
+#include "file_manager_proxy.h"
 
 namespace {
 using namespace std;

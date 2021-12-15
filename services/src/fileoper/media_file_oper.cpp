@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-#include "fms_mediafile_oper.h"
+#include "media_file_oper.h"
 
 #include <vector>
 
-#include "fms_const.h"
-#include "fms_fileinfo.h"
+#include "file_info.h"
+#include "file_manager_service_const.h"
 #include "ipc_types.h"
 #include "iremote_broker.h"
 #include "iremote_proxy.h"
@@ -44,7 +44,7 @@ const std::vector<std::pair<int, std::string>> mediaMetaMap = { {0, "string"}, /
 int Insert(const string &name, const string &path, const string &type)
 {
     Media::ValuesBucket values;
-    Media::MediaLibraryDataAbility abi;
+    Media::MediaLibraryDataAbility mediaLibDb;
     string abilityUri = Media::MEDIALIBRARY_DATA_URI;
     string oper;
     if (type == "album") {
@@ -59,8 +59,8 @@ int Insert(const string &name, const string &path, const string &type)
     // need MEDIA_DATA_DB_NAME
     values.PutLong(Media::MEDIA_DATA_DB_DATE_ADDED, statInfo.st_ctime);
     values.PutLong(Media::MEDIA_DATA_DB_DATE_MODIFIED, statInfo.st_mtime);
-    abi.InitMediaLibraryRdbStore();
-    return abi.Insert(createUri, values);
+    mediaLibDb.InitMediaLibraryRdbStore();
+    return mediaLibDb.Insert(createUri, values);
 }
 
 int MediaFileOper::CreateFile(const std::string &name, const std::string &path, std::string &uri)
@@ -79,7 +79,7 @@ int MediaFileOper::CreateFile(const std::string &name, const std::string &path, 
     return SUCCESS;
 }
 
-bool pushFileInfo(shared_ptr<Media::AbsSharedResultSet> result, MessageParcel &reply)
+bool PushFileInfo(shared_ptr<Media::AbsSharedResultSet> result, MessageParcel &reply)
 {
     string id;
     string uri;
@@ -112,7 +112,7 @@ int GetFileInfoFromResult(shared_ptr<Media::AbsSharedResultSet> result, MessageP
     result->GoToFirstRow();
     reply.WriteInt32(count);
     for (int i = 0; i < count; i++) {
-        pushFileInfo(result, reply);
+        PushFileInfo(result, reply);
         result->GoToNextRow();
     }
     return SUCCESS;
@@ -125,11 +125,11 @@ bool GetRelativePath(const string &path, string &relativePath)
     vector<string> selectionArgs = { path };
     predicates.SetWhereClause(selection);
     predicates.SetWhereArgs(selectionArgs);
-    Media::MediaLibraryDataAbility abi;
-    abi.InitMediaLibraryRdbStore();
+    Media::MediaLibraryDataAbility mediaLibDb;
+    mediaLibDb.InitMediaLibraryRdbStore();
     Uri uri(Media::MEDIALIBRARY_DATA_URI);
     vector<string> columns;
-    shared_ptr<Media::AbsSharedResultSet> result = abi.Query(uri, columns, predicates);
+    shared_ptr<Media::AbsSharedResultSet> result = mediaLibDb.Query(uri, columns, predicates);
     if (result == nullptr) {
         return false;
     }
@@ -161,7 +161,7 @@ int MediaFileOper::OperProcess(uint32_t code, MessageParcel &data, MessageParcel
         case FILE_OPER::MKDIR: {
             string name = data.ReadString();
             string path = data.ReadString();
-            errCode = mkdir(name, path);
+            errCode = Mkdir(name, path);
             break;
         }
         case FILE_OPER::LIST_FILE: {
@@ -201,11 +201,11 @@ int MediaFileOper::ListFile(const string &path, int offset, int count, MessagePa
     vector<string> selectionArgs = { relativePath };
     predicates.SetWhereClause(selection);
     predicates.SetWhereArgs(selectionArgs);
-    Media::MediaLibraryDataAbility abi;
-    abi.InitMediaLibraryRdbStore();
+    Media::MediaLibraryDataAbility mediaLibDb;
+    mediaLibDb.InitMediaLibraryRdbStore();
     Uri uri(Media::MEDIALIBRARY_DATA_URI);
     vector<string> columns;
-    shared_ptr<Media::AbsSharedResultSet> result = abi.Query(uri, columns, predicates);
+    shared_ptr<Media::AbsSharedResultSet> result = mediaLibDb.Query(uri, columns, predicates);
     if (result == nullptr) {
         ERR_LOG("MediaFileOper::ListFile folder is empty");
         return E_EMPTYFOLDER;
@@ -214,7 +214,7 @@ int MediaFileOper::ListFile(const string &path, int offset, int count, MessagePa
     return SUCCESS;
 }
 
-int MediaFileOper::mkdir(const string &name, const string &path)
+int MediaFileOper::Mkdir(const string &name, const string &path)
 {
     string type = "album";
     Insert(name, path, type);

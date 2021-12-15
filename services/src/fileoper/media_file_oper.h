@@ -15,27 +15,18 @@
 
 #pragma once
 
-#include "iremote_stub.h"
-#include "system_ability.h"
-#include "fms_service_stub.h"
+#include <string>
+#include "file_oper.h"
 
 namespace OHOS {
 namespace FileManagerService {
-
-class FileManagerService : public SystemAbility, public FileManagerServiceStub {
-    DECLARE_SYSTEM_ABILITY(FileManagerService);
+class MediaFileOper : public FileOper {
 public:
-    DISALLOW_COPY_AND_MOVE(FileManagerService);
-    explicit FileManagerService(int32_t systemAbilityId, bool runOnCreate = true);
-    virtual ~FileManagerService() = default;
-
-    void OnDump() override;
-
-    void OnStart() override;
-
-    void OnStop() override;
-
+    virtual ~MediaFileOper() = default;
+    int Mkdir(const std::string &name, const std::string &path) override;
+    int ListFile(const std::string &path, int offset, int count, MessageParcel &data) override;
+    int CreateFile(const std::string &name, const std::string &path, std::string &uri) override;
+    int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply) override;
 };
-
-} // namespace FileManagerService
-} // namespace OHOS
+} // OHOS
+} // FileManager

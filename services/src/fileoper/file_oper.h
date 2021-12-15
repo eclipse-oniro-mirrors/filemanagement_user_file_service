@@ -16,17 +16,20 @@
 #pragma once
 
 #include <string>
-#include "fms_file_oper.h"
+#include "ipc_types.h"
+#include "iremote_broker.h"
+#include "iremote_proxy.h"
+#include "iremote_stub.h"
 
 namespace OHOS {
 namespace FileManagerService {
-class MediaFileOper : public FileOper {
+class FileOper {
 public:
-    virtual ~MediaFileOper() = default;
-    int mkdir(const std::string &name, const std::string &path) override;
-    int ListFile(const std::string &path, int offset, int count, MessageParcel &data) override;
-    int CreateFile(const std::string &name, const std::string &path, std::string &uri) override;
-    int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply) override;
+    virtual ~FileOper() = default;
+    virtual int Mkdir(const std::string &name, const std::string &path) = 0;
+    virtual int ListFile(const std::string &path, int offset, int count, MessageParcel &data) = 0;
+    virtual int CreateFile(const std::string &name, const std::string &path, std::string &uri) = 0;
+    virtual int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply) = 0;
 };
 } // OHOS
 } // FileManager

@@ -15,15 +15,27 @@
 
 #pragma once
 
-#include <string>
-
-#include "fms_file_oper.h"
+#include "file_manager_service_stub.h"
+#include "iremote_stub.h"
+#include "system_ability.h"
 
 namespace OHOS {
 namespace FileManagerService {
-class OperFactory {
+
+class FileManagerService : public SystemAbility, public FileManagerServiceStub {
+    DECLARE_SYSTEM_ABILITY(FileManagerService);
 public:
-    FileOper* getFileOper(int equipmentId);
+    DISALLOW_COPY_AND_MOVE(FileManagerService);
+    explicit FileManagerService(int32_t systemAbilityId, bool runOnCreate = true);
+    virtual ~FileManagerService() = default;
+
+    void OnDump() override;
+
+    void OnStart() override;
+
+    void OnStop() override;
+
 };
-} // OHOS
-} // FileManager
+
+} // namespace FileManagerService
+} // namespace OHOS

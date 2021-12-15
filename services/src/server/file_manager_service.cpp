@@ -13,27 +13,34 @@
  * limitations under the License.
  */
 
-#pragma once
+#include "file_manager_service.h"
 
-#include "ipc_types.h"
-#include "iremote_broker.h"
-#include "iremote_proxy.h"
-#include "iremote_stub.h"
-#include "../fileoper/fms_oper_factory.h"
+#include "iservice_registry.h"
+#include "log.h"
+#include "system_ability_definition.h"
+
 
 namespace OHOS {
 namespace FileManagerService {
-class IFileManagerService : public IRemoteBroker {
-public:
-    DECLARE_INTERFACE_DESCRIPTOR(u"IFileManagerService");
-};
+REGISTER_SYSTEM_ABILITY_BY_ID(FileManagerService, FILE_MANAGER_SERVICE_ID, true);
 
-class FileManagerServiceStub : public IRemoteStub<IFileManagerService> {
-public:
-    int OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply);
-    virtual int OnRemoteRequest(uint32_t code, MessageParcel &data,
-                                MessageParcel &reply, MessageOption &option) override;
-};
+FileManagerService::FileManagerService(int32_t systemAbilityId, bool runOnCreate)
+    : SystemAbility(systemAbilityId, runOnCreate) { }
+void FileManagerService::OnDump() { }
+
+void FileManagerService::OnStart()
+{
+    DEBUG_LOG("FileManagerService::OnStart called");
+    bool res = Publish(this);
+    if (res) {
+        DEBUG_LOG("FileManagerService OnStart valid");
+    }
+}
+
+void FileManagerService::OnStop()
+{
+    DEBUG_LOG("FileManagerService OnStop");
+}
 
 } // namespace FileManagerService
 } // namespace OHOS
