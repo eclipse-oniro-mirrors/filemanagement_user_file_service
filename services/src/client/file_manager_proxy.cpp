@@ -68,18 +68,16 @@ IFmsClient *IFmsClient::GetFmsInstance()
 {
     auto samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
     if (samgr == nullptr) {
-        DEBUG_LOG("samgr object is NULL.");
+        ERR_LOG("samgr object is NULL.");
         return nullptr;
     }
     sptr<IRemoteObject> object = samgr->GetSystemAbility(FILE_MANAGER_SERVICE_ID);
     if (object == nullptr) {
-        DEBUG_LOG("FileManager Service object is NULL.");
+        ERR_LOG("FileManager Service object is NULL.");
         return nullptr;
     }
-    static FileManagerProxy msProxy(object);
-
-    DEBUG_LOG("FileManagerProxy::GetFmsInstance");
-    return &msProxy;
+    static FileManagerProxy proxy(object);
+    return &proxy;
 }
 
 int FileManagerProxy::ListFile(string path, int off, int count, vector<FileInfo> &fileRes)
@@ -126,7 +124,6 @@ int FileManagerProxy::Mkdir(string name, string path)
         return err;
     }
     reply.ReadInt32(err);
-    DEBUG_LOG("FileManagerProxy::mkdir reply %{public}d", err);
     return err;
 }
 } // FileManagerService

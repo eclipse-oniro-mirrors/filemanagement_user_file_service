@@ -13,14 +13,21 @@
 
 支持能力列举如下：
 - 公共文件路径下媒体文件查询，创建
+    媒体文件包括图片，音频，视频。媒体文件通过相册方式呈现
+    
 - 公共文件路径下文档文件查询、创建
 
+    文档文件包括其他文件，外部存储卡内的文件，文件以目录树方式呈现
+
+**图 1**  公共文件管理架构图<a name="fig174088216114"></a>
+![](figures/file manager service.png "公共文件管理架构图")
 
 ## 目录<a name="section161941989596"></a>
 
 仓目录结构如下:
 ```
 /foundation/storage/user_file_manger            # fms组件代码
+├── figures                                     # 插图文件
 ├── serivce                                     # 框架代码
 │   ├── etc                                     # 内部接口实现
 │   ├── src                                     # 内部接口实现
@@ -36,16 +43,8 @@
 ## 使用说明<a name="usage-guidelines"></a>
 ### 创建文件<a name="get-audioasset"></a>
 1.
-    ```
     接口流程
     应用通过接口让媒体库创建文件，返回文件uri, 应用自己通过openfile打开uri，获取fd进行文件操作。
-
-    // 应用A
-    // 拉起filepicker 获取 uri
-    import media_library from '@ohos.media_library'
-    fd = media_library.openfile(uri)
-    fileio.write(fd, data)
-    fileio.close()
 
     // file picker  流程
     // media_path通过filepicker获取待保存目录uri
@@ -60,10 +59,6 @@
             //类型错误，重名...
             // fail
         })
-
-    // FMS
-    mediaLib.createAsset(name)
-    return fileuri
     ```
 
 ## 相关仓<a name="section1533973044317"></a>

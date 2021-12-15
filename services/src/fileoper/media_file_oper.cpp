@@ -151,7 +151,6 @@ bool GetRelativePath(const string &path, string &relativePath)
     if (ret != NativeRdb::E_OK) {
         return false;
     }
-    DEBUG_LOG("GetRelativePath %{public}s", relativePath.c_str());
     return true;
 }
 
@@ -192,8 +191,6 @@ int MediaFileOper::ListFile(const string &path, int offset, int count, MessagePa
 {
     // get the relative path from the path uri
     string relativePath;
-
-    DEBUG_LOG("ListFile %{public}s", path.c_str());
     if (!GetRelativePath(path, relativePath)) {
         ERR_LOG("MediaFileOper::path not exsit");
         return E_NOEXIST;

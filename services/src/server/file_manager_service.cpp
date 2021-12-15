@@ -30,10 +30,9 @@ void FileManagerService::OnDump() { }
 
 void FileManagerService::OnStart()
 {
-    DEBUG_LOG("FileManagerService::OnStart called");
     bool res = Publish(this);
-    if (res) {
-        DEBUG_LOG("FileManagerService OnStart valid");
+    if (!res) {
+        ERR_LOG("FileManagerService OnStart invalid");
     }
 }
 
@@ -41,6 +40,5 @@ void FileManagerService::OnStop()
 {
     DEBUG_LOG("FileManagerService OnStop");
 }
-
 } // namespace FileManagerService
 } // namespace OHOS

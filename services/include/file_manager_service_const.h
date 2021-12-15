@@ -25,8 +25,8 @@ enum FILE_OPER {
 };
 
 enum EQUIPMENT {
-    INTERNAL,
-    EXTERNAL
+    INTERNAL_CARD,
+    EXTERNAL_CARD
 };
 
 const int32_t CODE_MASK = 0xff;

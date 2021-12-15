@@ -28,11 +28,11 @@ FileOper* OperFactory::getFileOper(int equipmentId)
     FileOper* fp = nullptr;
     DEBUG_LOG("OperFactory::getFileOper %{public}d.", equipmentId);
     switch (equipmentId) {
-        case EQUIPMENT::INTERNAL: {
+        case EQUIPMENT::INTERNAL_CARD: {
             fp = new MediaFileOper();
             break;
         }
-        case EQUIPMENT::EXTERNAL: {
+        case EQUIPMENT::EXTERNAL_CARD: {
             // do Exteranl storage process;
             // return ExternalOper()
             break;

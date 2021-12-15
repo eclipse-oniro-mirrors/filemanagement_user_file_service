@@ -30,27 +30,27 @@ public:
     FileInfo(const std::string &name, const std::string &path, const std::string &type, int64_t size, int64_t added_time,
         int64_t modified_time) : path_(path), name_(name), type_(type), size_(size),
         added_time_(added_time), modified_time_(modified_time) {}
-    std::string GetName()
+    std::string GetName() const
     {
         return name_;
     }
-    std::string GetPath()
+    std::string GetPath() const
     {
         return path_;
     }
-    std::string GetType()
+    std::string GetType() const
     {
         return type_;
     }
-    int64_t GetSize()
+    int64_t GetSize() const
     {
         return size_;
     }
-    int64_t GetAdded_Time()
+    int64_t GetAdded_Time() const
     {
         return added_time_;
     }
-    int64_t GetModified_time()
+    int64_t GetModified_time() const
     {
         return modified_time_;
     }
