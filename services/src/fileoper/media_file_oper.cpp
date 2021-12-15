@@ -68,20 +68,6 @@ int Insert(const string &name, const string &path, const string &type)
     return mediaLibDb.Insert(createUri, values);
 }
 
-int MediaFileOper::CreateFile(const std::string &name, const std::string &path, std::string &uri)
-{
-    string type = "file";
-    int index = Insert(name, path, type);
-    // media type need to check the path
-    if (index < 0) {
-        ERR_LOG("MediaFileOper:: Fail to create fail %{public}s %{public}s", name.c_str(), path.c_str());
-        return index;
-    }
-    uri = Media::MEDIALIBRARY_FILE_URI;
-    uri += "/" + to_string(index);
-    return SUCCESS;
-}
-
 bool PushFileInfo(shared_ptr<Media::AbsSharedResultSet> result, MessageParcel &reply)
 {
     string id;
@@ -154,6 +140,20 @@ bool GetRelativePath(const string &path, string &relativePath)
     return true;
 }
 
+int MediaFileOper::CreateFile(const std::string &name, const std::string &path, std::string &uri)
+{
+    string type = "file";
+    int index = Insert(name, path, type);
+    // media type need to check the path
+    if (index < 0) {
+        ERR_LOG("MediaFileOper:: Fail to create fail %{public}s %{public}s", name.c_str(), path.c_str());
+        return index;
+    }
+    uri = Media::MEDIALIBRARY_FILE_URI;
+    uri += "/" + to_string(index);
+    return SUCCESS;
+}
+
 int MediaFileOper::OperProcess(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
     int errCode = SUCCESS;
@@ -218,7 +218,7 @@ int MediaFileOper::Mkdir(const string &name, const string &path)
     string type = "album";
     Insert(name, path, type);
     DEBUG_LOG("MediaFileOper::mkdir path %{public}s.", path.c_str());
-    return 1;
+    return SUCCESS;
 }
 } // namespace FileManagerService
 } // namespace OHOS
