@@ -1,39 +1,64 @@
-# storage_user_file_manger
+# File Mangaer Service公共文件管理服务<a name="ZH-CN_TOPIC_0000001147574647"></a>
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
-
-#### 软件架构
-软件架构说明
+- [简介](#section1158716411637)
+- [目录](#section161941989596)
+- [使用说明](#usage-guidelines)
+    - [创建文件](#get-audioasset)
+- [相关仓](#section1533973044317)
 
 
-#### 安装教程
+## 简介<a name="section1158716411637"></a>
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+**File Mangaer Service**公共文件管理服务仓库提供了公共文件管理接口。File Mangaer Service接口暂不对外部应用开放, 仅内部使用。
 
-#### 使用说明
+支持能力列举如下：
+- 公共文件路径下媒体文件查询，创建
+    媒体文件包括图片，音频，视频。媒体文件通过相册方式呈现
+    
+- 公共文件路径下文档文件查询、创建
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+    文档文件包括其他文件，外部存储卡内的文件，文件以目录树方式呈现
 
-#### 参与贡献
+**图 1**  公共文件管理架构图<a name="fig174088216114"></a>
+![](figures/file manager service.png "公共文件管理架构图")
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+## 目录<a name="section161941989596"></a>
 
+仓目录结构如下:
+```
+/foundation/storage/user_file_manger            # fms组件代码
+├── figures                                     # 插图文件
+├── serivce                                     # 框架代码
+│   ├── etc                                     # 内部接口实现
+│   ├── src                                     # 内部接口实现
+├── interfaces                                  # 接口代码
+│   ├── innerkits                               # 内部 Native 接口
+│   └── kits                                    # 外部 JS 接口
+├── LICENSE                                     # 证书文件
+├── ohos.build                                  # 编译文件
+├── sa_profile                                  # 服务配置文件
+└── services                                    # 服务实现
+```
 
-#### 特技
+## 使用说明<a name="usage-guidelines"></a>
+### 创建文件<a name="get-audioasset"></a>
+1.
+    接口流程
+    应用通过接口让媒体库创建文件，返回文件uri, 应用自己通过openfile打开uri，获取fd进行文件操作。
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+    // file picker  流程
+    // media_path通过filepicker获取待保存目录uri
+    import filemanager from '@ohos.filemanager'
+    let media_path = "xxxx"
+    let name = "xxxx"
+    filemanager.createFile(name，media_path)
+        .then((uri) => {
+            // success
+        })
+        .catch(function(err) {
+            //类型错误，重名...
+            // fail
+        })
+    ```
+
+## 相关仓<a name="section1533973044317"></a>
