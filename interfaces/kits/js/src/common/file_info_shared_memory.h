@@ -16,6 +16,7 @@
 #ifndef _FILE_INFO_SHARED_MEMORY_H_
 #define _FILE_INFO_SHARED_MEMORY_H_
 
+#include <cstdio>
 #include <inttypes.h>
 #include <stdint.h>
 #include <string>
