@@ -16,6 +16,7 @@
 #define INTERFACES_KITS_NATIVE_PICKER_N_EXPOTER_H
 
 #include <dirent.h>
+#include <atomic>
 #include <thread>
 #include "data_ability_helper.h"
 #include "data_ability_observer_stub.h"
@@ -38,7 +39,7 @@ struct NameListArg {
 };
 
 struct PickerCallBack {
-    bool ready = false;
+    std::atomic<bool> ready{false};
     int32_t resultCode;
     OHOS::AAFwk::Want want;
 };
