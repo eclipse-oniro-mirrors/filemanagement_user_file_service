@@ -21,6 +21,18 @@ subsystem_name = "filemanagement"
 taihe_generated_file_path =
     "$taihe_file_path/out/$subsystem_name/$part_name/clouddiskmanager"
 
+config("optimize-size") {
+  cflags = [
+    "-fdata-sections",
+    "-ffunction-sections",
+    "-Oz",
+  ]
+  cflags_cc = [
+    "-fvisibility-inlines-hidden",
+    "-Oz",
+  ]
+}
+
 copy_taihe_idl("copy_taihe") {
   sources = [ "${user_file_service_path}/interfaces/kits/taihe/clouddiskmanager/idl/ohos.file.cloudDiskManager.taihe" ]
 }
@@ -39,6 +51,7 @@ taihe_shared_library("clouddiskmanager_taihe") {
   taihe_generated_file_path = "$taihe_generated_file_path"
   part_name = "$part_name"
   subsystem_name = "$subsystem_name"
+  configs = [ ":optimize-size" ]
 
   sanitize = {
     integer_overflow = true
@@ -46,13 +59,13 @@ taihe_shared_library("clouddiskmanager_taihe") {
     boundary_sanitize = true
     cfi = true
     cfi_cross_dso = true
+    cfi_vcall_icall_only = true
     debug = false
   }
 
   cflags = [
     "-DHILOG_ENABLE",
     "-fPIC",
-    "-g3",
   ]
 
   include_dirs = [
