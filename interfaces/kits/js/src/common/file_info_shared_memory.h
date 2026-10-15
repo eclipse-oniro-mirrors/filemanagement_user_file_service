@@ -33,6 +33,10 @@
 #include "parcel.h"
 #include "securec.h"
 
+#ifndef FAF_LOG_DOMAIN
+#define FAF_LOG_DOMAIN 0xD00430A
+#endif
+
 #define FAF_FDSAN_TAG_A 1
 #define FAF_FDSAN_TAG_SHIFT 32
 
