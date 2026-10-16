@@ -22,7 +22,7 @@ namespace FileManagement {
 using namespace FileAccessFwk;
 #ifdef SUPPORT_CLOUD_DISK_MANAGER
 constexpr int MAX_RETRY_TIMES = 3;
-std::set<int32_t> cloudDiskJSErrCode = {
+std::set<int32_t> cloudDiskErrCode = {
     FileAccessFwk::ERR_OK,                          // Success
     E_PERMISSION,                                   // Permission verification failed
     E_PERMISSION_SYS,                               // is not system app
@@ -46,7 +46,7 @@ std::set<int32_t> cloudDiskJSErrCode = {
 
 int32_t ConvertErrCode(int32_t errCode)
 {
-    if (cloudDiskJSErrCode.find(errCode) == cloudDiskJSErrCode.end()) {
+    if (cloudDiskErrCode.find(errCode) == cloudDiskErrCode.end()) {
         HILOG_ERROR("Not cloudDisk inner errcode: %{public}d", errCode);
         return E_IPC_FAILED;
     }
