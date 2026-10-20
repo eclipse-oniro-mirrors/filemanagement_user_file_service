@@ -525,6 +525,7 @@ ohos_unittest("cloud_disk_js_manager_test") {
     "${user_file_service_path}/interfaces/inner_api/file_access:file_access_ext_base_include",
     "${user_file_service_path}/interfaces/inner_api/cloud_disk_kit_inner:cloud_disk_manager_js_kit",
     "${user_file_service_path}/services:file_access_service_base_include",
+    "${user_file_service_path}/services:file_access_service_base_source",
   ]
 
   external_deps = [
@@ -583,6 +584,7 @@ ohos_unittest("cloud_disk_js_manager_placeholder_test") {
   deps = [
     "${user_file_service_path}/interfaces/inner_api/file_access:file_access_ext_base_include",
     "${user_file_service_path}/interfaces/inner_api/cloud_disk_kit_inner:cloud_disk_manager_js_kit",
+    "${user_file_service_path}/services:file_access_service_base_source",
   ]
 
   external_deps = [
@@ -629,6 +631,7 @@ ohos_unittest("cloud_disk_sync_folder_manager_test") {
     "${user_file_service_path}/interfaces/inner_api/file_access:file_access_ext_base_include",
     "${user_file_service_path}/interfaces/inner_api/cloud_disk_kit_inner:cloud_disk_manager_kit",
     "${user_file_service_path}/services:file_access_service_base_include",
+    "${user_file_service_path}/services:file_access_service_base_source",
   ]
 
   external_deps = [
