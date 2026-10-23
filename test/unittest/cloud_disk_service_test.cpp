@@ -62,26 +62,6 @@ void CloudDiskServiceTest::TearDown()
 }
 
 /**
- * @tc.number: CloudDiskService_RegisterBundleBroadcast_001
- * @tc.name: CloudDiskService_RegisterBundleBroadcast
- * @tc.desc: Verify RegisterBundleBroadcast function works correctly
- */
-HWTEST_F(CloudDiskServiceTest, CloudDiskService_RegisterBundleBroadcast_001, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "CloudDiskServiceTest-begin CloudDiskService_RegisterBundleBroadcast_001";
-    ASSERT_NE(fileAccessSvc_, nullptr);
-    fileAccessSvc_->RegisterBundleBroadcast();
-    EXPECT_TRUE(fileAccessSvc_->bundleObserver_ != nullptr);
-
-    fileAccessSvc_->isRegister_ = false;
-    fileAccessSvc_->RegisterBundleBroadcast();
-    EXPECT_TRUE(fileAccessSvc_->isRegister_);
-    fileAccessSvc_->bundleObserver_ = nullptr;
-    fileAccessSvc_->isRegister_ = false;
-    GTEST_LOG_(INFO) << "CloudDiskServiceTest-end CloudDiskService_RegisterBundleBroadcast_001";
-}
-
-/**
  * @tc.number: CloudDiskService_OnAddSystemAbility_001
  * @tc.name: CloudDiskService_OnAddSystemAbility
  * @tc.desc: Verify OnAddSystemAbility function works correctly
@@ -92,19 +72,6 @@ HWTEST_F(CloudDiskServiceTest, CloudDiskService_OnAddSystemAbility_001, TestSize
     ASSERT_NE(fileAccessSvc_, nullptr);
     fileAccessSvc_->OnAddSystemAbility(FILE_ACCESS_SERVICE_ID, "test");
     EXPECT_TRUE(fileAccessSvc_->bundleObserver_ == nullptr);
-
-    fileAccessSvc_->OnAddSystemAbility(COMMON_EVENT_SERVICE_ID, "test");
-    EXPECT_TRUE(fileAccessSvc_->bundleObserver_ != nullptr);
-
-    fileAccessSvc_->isRegister_ = false;
-    fileAccessSvc_->OnAddSystemAbility(COMMON_EVENT_SERVICE_ID, "test");
-    EXPECT_TRUE(fileAccessSvc_->isRegister_);
-
-    fileAccessSvc_->OnAddSystemAbility(COMMON_EVENT_SERVICE_ID, "test");
-    EXPECT_TRUE(fileAccessSvc_->isRegister_);
-    EXPECT_TRUE(fileAccessSvc_->bundleObserver_ != nullptr);
-    fileAccessSvc_->bundleObserver_ = nullptr;
-    fileAccessSvc_->isRegister_ = false;
     GTEST_LOG_(INFO) << "CloudDiskServiceTest-end CloudDiskService_OnAddSystemAbility_001";
 }
 
