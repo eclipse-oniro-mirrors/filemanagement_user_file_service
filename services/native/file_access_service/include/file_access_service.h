@@ -361,7 +361,6 @@ private:
     bool GetBundleNameFromUri(Uri &uri, string &bundleName);
 
     std::shared_ptr<BundleObserver> bundleObserver_ = nullptr;
-    bool isRegister_ = false;
     OHOS::ThreadPool  handleBroadCastThreadPool_;
 };
 } // namespace FileAccessFwk

@@ -598,25 +598,6 @@ void FileAccessService::OnStart(const SystemAbilityOnDemandReason &startReason)
 {
     HILOG_INFO("FileAccessService::OnStart reson");
     AddSystemAbilityListener(COMMON_EVENT_SERVICE_ID);
-    if (startReason.HasExtraData()) {
-        auto task = [obj {wptr<FileAccessService>(this)}]() {
-            auto ptr = obj.promote();
-            if (ptr == nullptr) {
-                HILOG_ERROR("OnStart ptr is nullptr");
-                return;
-            }
-            std::lock_guard<std::mutex> lock(obj->observerMux_);
-            if (ptr->bundleObserver_ == nullptr) {
-                HILOG_INFO("OnStart reason new bundleObserver_");
-                EventFwk::MatchingSkills matchingSkills;
-                matchingSkills.AddEvent(EventFwk::CommonEventSupport::COMMON_EVENT_PACKAGE_REMOVED);
-                EventFwk::CommonEventSubscribeInfo subscriberInfo(matchingSkills);
-                ptr->bundleObserver_ = std::make_shared<BundleObserver>(subscriberInfo, obj);
-            }
-            ptr->bundleObserver_->HandleBundleBroadcast();
-        };
-        handleBroadCastThreadPool_.AddTask(task);
-    }
     OnStart();
 }
 
@@ -625,7 +606,7 @@ void FileAccessService::OnAddSystemAbility(int32_t systemAbilityId, const std::s
     HILOG_INFO("FileAccessService::OnAddSystemAbility Begin");
     if (systemAbilityId == COMMON_EVENT_SERVICE_ID) {
         std::lock_guard<std::mutex> lock(observerMux_);
-        if (bundleObserver_ == nullptr || !isRegister_)  {
+        if (bundleObserver_ == nullptr)  {
             HILOG_ERROR("OnAddSystemAbility, bundleObserver is null, Will register bundle broadcast");
             RegisterBundleBroadcast();
         }
@@ -635,6 +616,7 @@ void FileAccessService::OnAddSystemAbility(int32_t systemAbilityId, const std::s
 void FileAccessService::OnRemoveSystemAbility(int32_t systemAbilityId, const std::string &deviceId)
 {
     HILOG_INFO("FileAccessService::OnRemoveSystemAbility");
+    bundleObserver_ = nullptr;
 }
 
 
@@ -648,7 +630,16 @@ void FileAccessService::RegisterBundleBroadcast()
         bundleObserver_ = std::make_shared<BundleObserver>(subscriberInfo, wptr<FileAccessService>(this));
     }
     EventFwk::CommonEventManager::NewSubscribeCommonEvent(bundleObserver_);
-    isRegister_ = true;
+    auto task = [obj {wptr<FileAccessService>(this)}]() {
+        auto ptr = obj.promote();
+        if (ptr == nullptr) {
+            HILOG_ERROR("RegisterBundleBroadcast ptr is nullptr");
+            return;
+        }
+        std::lock_guard<std::mutex> lock(obj->observerMux_);
+        ptr->bundleObserver_->HandleBundleBroadcast();
+    };
+    handleBroadCastThreadPool_.AddTask(task);
     HILOG_INFO("FileAccessService::RegisterBundleBroadcast End");
 }
 
