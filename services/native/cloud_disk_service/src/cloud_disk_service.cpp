@@ -606,7 +606,7 @@ void FileAccessService::OnAddSystemAbility(int32_t systemAbilityId, const std::s
     HILOG_INFO("FileAccessService::OnAddSystemAbility Begin");
     if (systemAbilityId == COMMON_EVENT_SERVICE_ID) {
         std::lock_guard<std::mutex> lock(observerMux_);
-        if (bundleObserver_ == nullptr)  {
+        if (bundleObserver_ == nullptr) {
             HILOG_ERROR("OnAddSystemAbility, bundleObserver is null, Will register bundle broadcast");
             RegisterBundleBroadcast();
         }
@@ -639,6 +639,7 @@ void FileAccessService::RegisterBundleBroadcast()
         std::lock_guard<std::mutex> lock(obj->observerMux_);
         if (ptr->bundleObserver_ == nullptr) {
             HILOG_ERROR("bundleObserver_ is nullptr");
+            return;
         }
         ptr->bundleObserver_->HandleBundleBroadcast();
     };
