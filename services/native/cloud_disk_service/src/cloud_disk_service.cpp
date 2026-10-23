@@ -637,6 +637,9 @@ void FileAccessService::RegisterBundleBroadcast()
             return;
         }
         std::lock_guard<std::mutex> lock(obj->observerMux_);
+        if (ptr->bundleObserver_ == nullptr) {
+            HILOG_ERROR("bundleObserver_ is nullptr");
+        }
         ptr->bundleObserver_->HandleBundleBroadcast();
     };
     handleBroadCastThreadPool_.AddTask(task);
