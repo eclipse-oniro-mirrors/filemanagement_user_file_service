@@ -21,8 +21,8 @@
       *OHOS::FileManagement::CloudDiskSyncFolderManagerImpl*;
 
       # IPC Marshalling/Unmarshalling for public Parcelable types
+      # (SyncFolderExt is covered by the SyncFolder pattern as a substring match)
       *OHOS::FileManagement::SyncFolder*;
-      *OHOS::FileManagement::SyncFolderExt*;
     };
 
   local:
