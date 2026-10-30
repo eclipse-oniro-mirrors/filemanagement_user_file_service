@@ -15,10 +15,8 @@
   global:
     extern "C++" {
       # CloudDiskSyncFolderManager API (used by clouddiskservice_sa of dfs_service)
+      # (CloudDiskSyncFolderManagerImpl is covered by the Manager pattern as a substring match)
       *OHOS::FileManagement::CloudDiskSyncFolderManager*;
-
-      # CloudDiskSyncFolderManagerImpl API
-      *OHOS::FileManagement::CloudDiskSyncFolderManagerImpl*;
 
       # IPC Marshalling/Unmarshalling for public Parcelable types
       # (SyncFolderExt is covered by the SyncFolder pattern as a substring match)
