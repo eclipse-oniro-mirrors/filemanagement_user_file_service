@@ -343,6 +343,7 @@ ohos_unittest("js_file_access_ext_ability_test") {
     "napi:ace_napi",
     "node:node_header_notice",
     "os_account:os_account_innerkits",
+    "samgr:samgr_proxy",
   ]
 
   defines = [ "private=public" ]
@@ -407,6 +408,7 @@ ohos_unittest("js_file_access_ext_ability_lambda_test") {
     "napi:ace_napi",
     "node:node_header_notice",
     "os_account:os_account_innerkits",
+    "samgr:samgr_proxy",
   ]
  
   defines = [ "private=public" ]
@@ -717,6 +719,7 @@ ohos_unittest("cloud_disk_service_test") {
     "os_account:os_account_innerkits",
     "safwk:system_ability_fwk",
     "relational_store:native_rdb",
+    "samgr:samgr_proxy",
   ]
 
   defines = [
@@ -941,6 +944,7 @@ ohos_unittest("file_access_service_test") {
     "os_account:os_account_innerkits",
     "safwk:system_ability_fwk",
     "relational_store:native_rdb",
+    "samgr:samgr_proxy",
   ]
 
   defines = [
