@@ -122,8 +122,8 @@ int32_t UfsAccessTokenHelper::GetBundleNameByToken(uint32_t tokenId, std::string
 
 int32_t UfsAccessTokenHelper::GetUserId()
 {
-    auto uid = IPCSkeleton::GetCallingUid();
-    return uid / BASE_USER_RANGE;
+    auto appUid = IPCSkeleton::GetCallingAppUid();
+    return appUid / BASE_USER_RANGE;
 }
 std::string UfsAccessTokenHelper::ReplacePlaceholders(const std::string& path, const std::string& userId)
 {
