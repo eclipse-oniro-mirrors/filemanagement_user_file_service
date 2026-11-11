@@ -15,16 +15,15 @@
 #ifndef TAIHE_MODAL_UI_CALLBACK_H
 #define TAIHE_MODAL_UI_CALLBACK_H
 
+#include "ability_context.h"
+#include "want.h"
+#include "want_params.h"
 #include <atomic>
 #include <string>
-
-#include "ability_context.h"    // NOLINT(build/include_subdir)
-#include "ani.h"                // NOLINT(build/include_subdir)
-#include "taihe/platform/ani.hpp"
+#include "ui_content.h"
+#include "ani.h"
 #include "taihe/runtime.hpp"
-#include "ui_content.h"         // NOLINT(build/include_subdir)
-#include "want.h"               // NOLINT(build/include_subdir)
-#include "want_params.h"        // NOLINT(build/include_subdir)
+#include "taihe/platform/ani.hpp"
 
 namespace OHOS {
 namespace Picker {
