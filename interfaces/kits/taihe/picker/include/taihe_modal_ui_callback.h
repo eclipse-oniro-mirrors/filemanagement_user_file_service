@@ -18,6 +18,7 @@
 #include "ability_context.h"
 #include "want.h"
 #include "want_params.h"
+#include <atomic>
 #include <string>
 #include "ui_content.h"
 #include "ani.h"
@@ -34,7 +35,7 @@ struct AniNameListArg {
 };
 
 struct AniPickerCallBack {
-    bool ready = false;
+    std::atomic<bool> ready { false };
     int32_t resultCode;
     OHOS::AAFwk::Want want;
 };

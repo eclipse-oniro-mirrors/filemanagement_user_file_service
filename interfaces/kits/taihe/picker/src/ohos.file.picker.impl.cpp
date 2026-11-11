@@ -346,13 +346,13 @@ namespace {
     class DocumentViewPickerImpl {
     public:
         DocumentViewPickerImpl()
-            : context_(nullptr), window_(nullptr), suffixIndex_(0), vm_(nullptr)
+            : context_(nullptr), window_(nullptr), suffixIndex_(-1), vm_(nullptr)
         {
             HILOG_INFO("Begin");
         }
 
         explicit DocumentViewPickerImpl(uintptr_t context)
-            : context_(nullptr), window_(nullptr), suffixIndex_(0), vm_(nullptr)
+            : context_(nullptr), window_(nullptr), suffixIndex_(-1), vm_(nullptr)
         {
             HILOG_INFO("Begin");
             taihe::env_guard guard;
@@ -384,7 +384,7 @@ namespace {
         }
 
         DocumentViewPickerImpl(uintptr_t context, uintptr_t window)
-            : context_(nullptr), window_(nullptr), suffixIndex_(0), vm_(nullptr)
+            : context_(nullptr), window_(nullptr), suffixIndex_(-1), vm_(nullptr)
         {
             HILOG_INFO("Begin");
             taihe::env_guard guard;
