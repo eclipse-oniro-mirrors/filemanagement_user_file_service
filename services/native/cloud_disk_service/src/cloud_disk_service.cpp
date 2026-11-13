@@ -232,7 +232,8 @@ int32_t FileAccessService::Unregister(const std::string &path)
         }
     }
     if (syncFolderExt.bundleName_ != bundleName) {
-        HILOG_ERROR("bundleName Not Match");
+        HILOG_ERROR("bundleName Not Match, caller: %{public}s, owner: %{public}s",
+            bundleName.c_str(), syncFolderExt.bundleName_.c_str());
         DecreaseCnt(__func__);
         return E_INVALID_PARAM;
     }
