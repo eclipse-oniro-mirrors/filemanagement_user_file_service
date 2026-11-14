@@ -72,8 +72,8 @@ bool FileAccessHelper::IsFilePathValid(const std::string &filePath)
 
 static int GetUserId()
 {
-    int uid = IPCSkeleton::GetCallingUid();
-    int userId = uid / AppExecFwk::Constants::BASE_USER_RANGE;
+    int appUid = IPCSkeleton::GetCallingAppUid();
+    int userId = appUid / AppExecFwk::Constants::BASE_USER_RANGE;
     return userId;
 }
 
