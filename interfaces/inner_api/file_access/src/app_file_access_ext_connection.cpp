@@ -116,6 +116,7 @@ bool AppFileAccessExtConnection::IsExtAbilityConnected()
 
 sptr<IFileAccessExtBase> AppFileAccessExtConnection::GetFileExtProxy()
 {
+    std::lock_guard<std::mutex> lock(proxyMutex_);
     return fileExtProxy_;
 }
 
