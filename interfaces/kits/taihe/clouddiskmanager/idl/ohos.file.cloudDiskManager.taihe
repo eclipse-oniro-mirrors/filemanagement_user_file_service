@@ -64,18 +64,17 @@ enum HydrateProgressState: i32 {
 struct HydrateProgress {
     filePath: String;
     state: HydrateProgressState;
-    processedSize: f64;
-    totalSize: f64;
+    processedSize: i64;
+    totalSize: i64;
 }
 
 @class
 interface CloudDiskSystemAccessor {
-    @rename("on")
-    OnHydrateProgress(type: @literal("hydrateProgress") unit, callback: (data: HydrateProgress) => void): void;
+    @rename("onHydrateProgress")
+    OnHydrateProgress(callback: (data: HydrateProgress) => void): void;
 
-    @rename("off")
-    OffHydrateProgress(type: @literal("hydrateProgress") unit,
-        @optional callback: Optional<(data: HydrateProgress) => void>): void;
+    @rename("offHydrateProgress")
+    OffHydrateProgress(@optional callback: Optional<(data: HydrateProgress) => void>): void;
 
     @rename("hydratePlaceholder")
     @promise

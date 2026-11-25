@@ -15,6 +15,7 @@
 
 #include "hydrate_progress_callback.h"
 
+#include <cstdint>
 #include <new>
 
 #include "hilog_wrapper.h"
@@ -24,6 +25,7 @@ namespace OHOS::FileManagement::CloudDiskService {
 namespace TH = ::ohos::file::cloudDiskManager;
 namespace {
 constexpr ani_size HYDRATE_PROGRESS_LOCAL_REF_CAPACITY = 16;
+constexpr uint64_t MAX_PROGRESS_SIZE = INT64_MAX;
 } // namespace
 
 TaiheHydrateProgressCallback::TaiheHydrateProgressCallback(ani_vm *vm,
@@ -89,6 +91,10 @@ void TaiheHydrateProgressCallback::OnProgress(const HydrateProgress &progress)
     if (IsClosed()) {
         return;
     }
+    if (progress.processedSize > MAX_PROGRESS_SIZE || progress.totalSize > MAX_PROGRESS_SIZE) {
+        HILOG_ERROR("Hydration progress size exceeds the range of ArkTS long");
+        return;
+    }
     wptr<TaiheHydrateProgressCallback> weak(this);
     auto task = [weak, progress]() {
         auto callback = weak.promote();
@@ -120,7 +126,7 @@ void TaiheHydrateProgressCallback::Dispatch(const HydrateProgress &progress)
         // Keep the handler alive if it calls off() and clears callback_ reentrantly.
         auto callback = *callback_;
         TH::HydrateProgress value {progress.filePath, TH::HydrateProgressState::from_value(progress.state),
-            static_cast<double>(progress.processedSize), static_cast<double>(progress.totalSize)};
+            static_cast<int64_t>(progress.processedSize), static_cast<int64_t>(progress.totalSize)};
         callback(value);
     }
     if (taihe::has_error()) {

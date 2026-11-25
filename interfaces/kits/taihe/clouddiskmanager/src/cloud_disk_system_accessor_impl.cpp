@@ -102,9 +102,8 @@ public:
         }
     }
 
-    void OnHydrateProgress(taihe::unit type, taihe::callback_view<void(TH::HydrateProgress const &)> callback)
+    void OnHydrateProgress(taihe::callback_view<void(TH::HydrateProgress const &)> callback)
     {
-        (void)type;
         HILOG_INFO("CloudDiskSystemAccessor Taihe on begin");
         int32_t ret = CheckAccess();
         if (ret != FM::E_OK) {
@@ -113,7 +112,7 @@ public:
         }
         std::unique_lock<std::mutex> lock(mutex_);
         if (progress_ != nullptr) {
-            ThrowError(FM::E_CALLBACK_ALREADY_REGISTERED);
+            HILOG_INFO("CloudDiskSystemAccessor Taihe progress callback is already registered");
             return;
         }
         auto progress = TaiheHydrateProgressCallback::Create(callback);
@@ -131,9 +130,8 @@ public:
         progress_ = std::move(progress);
     }
 
-    void OffHydrateProgress(taihe::unit type, taihe::optional_view<ProgressCallback> callback)
+    void OffHydrateProgress(taihe::optional_view<ProgressCallback> callback)
     {
-        (void)type;
         (void)callback;
         HILOG_INFO("CloudDiskSystemAccessor Taihe off begin");
         int32_t ret = CheckAccess();
@@ -143,14 +141,14 @@ public:
         }
         std::unique_lock<std::mutex> lock(mutex_);
         if (progress_ == nullptr) {
-            ThrowError(FM::E_CALLBACK_NOT_REGISTERED);
+            HILOG_INFO("CloudDiskSystemAccessor Taihe progress callback is not registered");
             return;
         }
         ret = CloudDiskServiceManager::GetInstance().UnregisterProgressCallback(accessorId_, progress_);
         auto progress = std::move(progress_);
         lock.unlock();
         progress->Close();
-        if (ret != FM::E_OK) {
+        if (ret != FM::E_OK && ret != FM::E_CALLBACK_NOT_REGISTERED) {
             ThrowError(ret);
         }
     }
